@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: DFX Woo Role Changer
- * Description: Change user roles on product purchases in WooCommerce
+ * Plugin Name: DFX Automatic Role Changer for WooCommerce
+ * Description: Allows the automatic assignation of roles to users on product purchases in WooCommerce
  * Version:     20201115
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
