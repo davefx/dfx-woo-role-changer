@@ -1,25 +1,25 @@
 # Copyright (C) 2020 David Marín Carreño
-# This file is distributed under the same license as the DFX WooCommerce Role Changer plugin.
+# This file is distributed under the same license as the DFX Automatic Role Changer for WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: DFX Woo Role Changer 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dfx-woo-role-changer\n"
+"Project-Id-Version: DFX Automatic Role Changer for WooCommerce 20201217\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/git\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-11-07T09:52:09+01:00\n"
+"POT-Creation-Date: 2020-12-17T11:50:42+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.4.0\n"
 "X-Domain: dfx-woo-role-changer\n"
 
 #. Plugin Name of the plugin
-msgid "DFX Woo Role Changer"
+msgid "DFX Automatic Role Changer for WooCommerce"
 msgstr ""
 
 #. Description of the plugin
-msgid "Change user roles on product purchases in WooCommerce"
+msgid "Allows the automatic assignation of roles to users on product purchases in WooCommerce"
 msgstr ""
 
 #. Author of the plugin
@@ -30,6 +30,10 @@ msgstr ""
 msgid "https://davefx.com"
 msgstr ""
 
-#: dfx-woocommerce-role-changer.php:94
+#: dfx-woo-role-changer.php:94
 msgid "None"
+msgstr ""
+
+#: dfx-woo-role-changer.php:103
+msgid "Role to be assigned to people purchasing this product"
 msgstr ""
