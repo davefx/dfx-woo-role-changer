@@ -3,8 +3,8 @@ Contributors: DaveFX
 Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
-Tested up to: 6.0.2
-Stable tag: 20201217.1
+Tested up to: 6.4.2
+Stable tag: 20201217.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
