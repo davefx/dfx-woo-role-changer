@@ -83,6 +83,12 @@ final class DfxWooRoleChanger {
 
 		add_filter( 'woocommerce_payment_complete', [ $this, 'role_assignment' ], 0, 1 );
 		add_filter( 'woocommerce_order_refunded', [ $this, 'role_unassignment' ], 0, 2 );
+
+		add_action('before_woocommerce_init', function(){
+			if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+			}
+		});
 	}
 
 	public function load_i18n() {
