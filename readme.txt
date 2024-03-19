@@ -3,8 +3,8 @@ Contributors: DaveFX
 Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
-Tested up to: 6.4.2
-Stable tag: 20201217.2
+Tested up to: 6.4.3
+Stable tag: 20240319
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +17,10 @@ Once activated, every product will have an additional *Role to be assigned to pe
  
 
 == Changelog ==
+
+= 20240319 =
+
+* Marking compatibility with HPOS.
 
 = 20201115 =
 
