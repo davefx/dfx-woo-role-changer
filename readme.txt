@@ -8,8 +8,7 @@ Stable tag: 20240319.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-This WordPress plugin allows the association of a role to a WooCommerce product so the role will be assigned to a registered user
-when the product is purchased.
+This plugin allows the association of a role to a WooCommerce product so the role is assigned to a registered user when the product is purchased.
 
 == How it works ==
 
