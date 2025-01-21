@@ -1,93 +1,140 @@
-# Copyright (C) 2024 David Marín Carreño
+# Copyright (C) 2025 David Marín Carreño
 # This file is distributed under the same license as the DFX Automatic Role Changer for WooCommerce plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: DFX Automatic Role Changer for WooCommerce 20240616\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/git\n"
+"Project-Id-Version: DFX Automatic Role Changer for WooCommerce 20250121\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dfx-woo-role-changer\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-16T14:28:50+02:00\n"
+"POT-Creation-Date: 2025-01-21T21:21:34+01:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: dfx-woo-role-changer\n"
 
 #. Plugin Name of the plugin
+#: dfx-woo-role-changer.php
 msgid "DFX Automatic Role Changer for WooCommerce"
 msgstr ""
 
 #. Description of the plugin
+#: dfx-woo-role-changer.php
 msgid "Allows the automatic assignation of roles to users on product purchases in WooCommerce"
 msgstr ""
 
 #. Author of the plugin
+#: dfx-woo-role-changer.php
 msgid "David Marín Carreño"
 msgstr ""
 
 #. Author URI of the plugin
+#: dfx-woo-role-changer.php
 msgid "https://davefx.com"
 msgstr ""
 
-#: dfx-woo-role-changer.php:133
+#. translators: 1: role name
+#: dfx-woo-role-changer-premium-features.php:261
+msgid "Role \"%1$s\" will not be removed because it is associated with another active subscription."
+msgstr ""
+
+#: dfx-woo-role-changer-premium-features.php:273
+msgid "Removing role pending from previous switch after subscription status change."
+msgstr ""
+
+#: dfx-woo-role-changer-premium-features.php:323
+msgid "Adding role after successful switch."
+msgstr ""
+
+#. translators: 1: role name
+#: dfx-woo-role-changer-premium-features.php:336
+msgid "Role \"%1$s\" will be removed when the subscription gets into on-hold status (in the next renewal)."
+msgstr ""
+
+#: dfx-woo-role-changer-premium-features.php:355
+msgid " (for non-subscription products)"
+msgstr ""
+
+#: dfx-woo-role-changer-premium-features.php:356
+msgid " (only for non-subscription products: subscription products will get roles assigned when subscription is activated and removed when the subscription is cancelled or paused)"
+msgstr ""
+
+#: dfx-woo-role-changer.php:216
 msgid "None"
 msgstr ""
 
-#: dfx-woo-role-changer.php:142
+#: dfx-woo-role-changer.php:220
+#: dfx-woo-role-changer.php:241
 msgid "Role to be assigned to people purchasing this product"
 msgstr ""
 
+#: dfx-woo-role-changer.php:225
+msgid " The role will be assigned and deassigned following the status of the subscription. "
+msgstr ""
+
+#: dfx-woo-role-changer.php:228
+msgid " The premium version of the plugin supports assigning/deassigning roles based on product subscription status. "
+msgstr ""
+
+#: dfx-woo-role-changer.php:230
+msgid "<a href=\"%s\">Upgrade to Pro</a> to get this feature."
+msgstr ""
+
 #. translators: 1: role name, 2: user login
-#: dfx-woo-role-changer.php:265
+#: dfx-woo-role-changer.php:408
 msgid "Added role \"%1$s\" to user \"%2$s\""
 msgstr ""
 
 #. translators: 1: role name, 2: user login
-#: dfx-woo-role-changer.php:298
+#: dfx-woo-role-changer.php:446
 msgid "Removed role \"%1$s\" from user \"%2$s\"."
 msgstr ""
 
-#: dfx-woo-role-changer.php:312
+#: dfx-woo-role-changer.php:463
 msgid "Settings"
 msgstr ""
 
-#: dfx-woo-role-changer.php:347
+#: dfx-woo-role-changer.php:498
 msgid "DFX Role Changer Settings"
 msgstr ""
 
-#: dfx-woo-role-changer.php:359
+#: dfx-woo-role-changer.php:510
 msgid "Role assignment mode"
 msgstr ""
 
-#: dfx-woo-role-changer.php:363
+#: dfx-woo-role-changer.php:514
 msgid "Add/Remove Roles"
 msgstr ""
 
-#: dfx-woo-role-changer.php:364
+#: dfx-woo-role-changer.php:515
 msgid "Replace Roles"
 msgstr ""
 
-#: dfx-woo-role-changer.php:366
+#: dfx-woo-role-changer.php:517
 msgid "Choose the mode of role assignment. If you are using a plugin that allows managing multiple roles for a given user, you can choose to add or remove roles. If not, you should choose to replace the role."
 msgstr ""
 
-#: dfx-woo-role-changer.php:371
+#: dfx-woo-role-changer.php:522
 msgid "When to grant roles"
 msgstr ""
 
-#: dfx-woo-role-changer.php:375
+#: dfx-woo-role-changer.php:526
 msgid "On order payment"
 msgstr ""
 
-#: dfx-woo-role-changer.php:376
+#: dfx-woo-role-changer.php:527
 msgid "When order gets to Processing state"
 msgstr ""
 
-#: dfx-woo-role-changer.php:377
+#: dfx-woo-role-changer.php:528
 msgid "When order gets to Completed state"
 msgstr ""
 
-#: dfx-woo-role-changer.php:380
+#: dfx-woo-role-changer.php:531
 msgid "When in the order lifecycle the role should be granted. If you choose more than one option, the role will be granted at all the selected moments."
+msgstr ""
+
+#: dfx-woo-role-changer.php:539
+msgid "Unlock Premium Features"
 msgstr ""
