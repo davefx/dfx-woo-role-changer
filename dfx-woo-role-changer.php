@@ -233,7 +233,7 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 'none' => __( 'None', 'dfx-woo-role-changer' ),
             ], $options );
             echo '<div class="options_group">';
-            $description = __( 'Role to be assigned to people purchasing this product', 'dfx-woo-role-changer' );
+            $description = __( 'Role to be assigned to people purchasing this product.', 'dfx-woo-role-changer' );
             // If WooCommerce Subscriptions is installed, and this is a subscription product promote the Pro version
             if ( class_exists( 'WC_Subscriptions' ) && WC_Subscriptions_Product::is_subscription( get_the_ID() ) ) {
                 if ( dfx_woo_role_changer_fs()->is_not_paying() ) {
@@ -246,7 +246,7 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 'value'       => get_post_meta( get_the_ID(), '_dfxwcrc_role_assignment', true ) ?? 'none',
                 'label'       => 'Assigned Role',
                 'desc_tip'    => true,
-                'description' => __( 'Role to be assigned to people purchasing this product', 'dfx-woo-role-changer' ),
+                'description' => $description,
                 'options'     => $options,
             ) );
             echo '</div>';
@@ -372,7 +372,7 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             $order = null,
             $note = ''
         ) {
-            if ( in_array( $role, $user->roles ) ) {
+            if ( in_array( $role, $user->roles, true ) ) {
                 if ( $this->get_current_mode() === 'replace_roles' ) {
                     $old_roles = get_user_meta( $user->ID, 'dfxwcrc_old_roles', true );
                     if ( $old_roles ) {
@@ -471,17 +471,17 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 'id'      => 'dfx_woo_role_changer_grant_moment',
             ];
             // Message for non-premium users
-            if ( !dfx_woo_role_changer_fs()->is_not_paying() ) {
+            if ( dfx_woo_role_changer_fs()->is_not_paying() ) {
                 // Adds a direct checkout link in the free version.
                 $settings['dfx_woo_role_changer_premium_message'] = [
                     'name'     => __( 'Unlock Premium Features', 'dfx-woo-role-changer' ),
                     'type'     => 'title',
                     'desc_tip' => false,
-                    'desc'     => sprintf( __( '<a href="%s"><small>Unlock Pro</small></a>' ), dfx_woo_role_changer_fs()->checkout_url() ),
+                    'desc'     => sprintf( __( '<a href="%s"><small>Unlock Premium Features</small></a>' ), dfx_woo_role_changer_fs()->checkout_url() ),
                     'id'       => 'dfx_woo_role_changer_premium_message',
                 ];
             }
-            $settings['dfx_woo_sole_changer_section_end'] = array(
+            $settings['dfx_woo_role_changer_section_end'] = array(
                 'type' => 'sectionend',
                 'id'   => 'dfx_woo_role_changer_section_end',
             );
