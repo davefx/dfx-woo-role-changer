@@ -41,7 +41,7 @@ if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
             global $dfx_woo_role_changer_fs;
             if ( !isset( $dfx_woo_role_changer_fs ) ) {
                 // Include Freemius SDK.
-                require_once dirname( __FILE__ ) . '/lib/freemius/wordpress-sdk/start.php';
+                require_once dirname( __FILE__ ) . '/includes/freemius/wordpress-sdk/start.php';
                 $dfx_woo_role_changer_fs = fs_dynamic_init( array(
                     'id'             => '17666',
                     'slug'           => 'dfx-woo-role-changer',
