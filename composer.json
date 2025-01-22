@@ -1,0 +1,14 @@
+{
+    "name": "davefx/dfx-woo-role-changer",
+    "description": "DFX Automatic Role Changer for WooCommerce",
+    "require": {
+        "freemius/wordpress-sdk": "^2.10"
+    },
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "David Marín Carreño",
+            "email": "davefx@davefx.com"
+        }
+    ]
+}
