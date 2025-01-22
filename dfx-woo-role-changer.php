@@ -491,17 +491,17 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
 
     }
 
-}
-/**
- * Gets the instance of the `DfxFeedbackPlugin` class.  This function is useful for quickly grabbing data
- * used throughout the plugin.
- *
- * @since  1.0.0
- * @return object
- */
-function dfx_woo_role_changer_plugin() {
-    return DfxWooRoleChanger::get_instance();
-}
+    /**
+     * Gets the instance of the `DfxFeedbackPlugin` class.  This function is useful for quickly grabbing data
+     * used throughout the plugin.
+     *
+     * @return object
+     * @since  1.0.0
+     */
+    function dfx_woo_role_changer_plugin() {
+        return DfxWooRoleChanger::get_instance();
+    }
 
-// Let's roll!
-dfx_woo_role_changer_plugin();
+    // Let's roll!
+    dfx_woo_role_changer_plugin();
+}
