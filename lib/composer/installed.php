@@ -3,7 +3,7 @@
         'name' => 'davefx/dfx-woo-role-changer',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '5137cb288980400b3c54c9f9ed119ebc808bf141',
+        'reference' => '15a90fe9dabc1ce160b36488c9ef2555fc381093',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'davefx/dfx-woo-role-changer' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '5137cb288980400b3c54c9f9ed119ebc808bf141',
+            'reference' => '15a90fe9dabc1ce160b36488c9ef2555fc381093',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

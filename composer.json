@@ -10,5 +10,8 @@
             "name": "David Marín Carreño",
             "email": "davefx@davefx.com"
         }
-    ]
+    ],
+    "config": {
+        "vendor-dir": "lib"
+    }
 }
