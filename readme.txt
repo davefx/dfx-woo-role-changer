@@ -21,7 +21,7 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 
 * Integrates seamlessly with WooCommerce.
 
-* Supports role management tied to WooCommerce Subscriptions (Premium).
+* Supports role management tied to [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (Premium).
 
 == Installation ==
 
@@ -61,19 +61,17 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 
 = WooCommerce Subscriptions Integration =
 
-The premium version supports advanced functionality for WooCommerce Subscriptions:
+The premium version supports advanced functionality for WooCommerce Subscriptions, assigning roles based on subscription status:
 
-* Assign roles based on subscription status:
+* Active: Assigns a role when a subscription is active.
 
-** Active: Assigns a role when a subscription is active.
+* Suspended: Updates the user role if a subscription is suspended.
 
-** Suspended: Updates the user role if a subscription is suspended.
-
-** Cancelled: Removes or changes roles when a subscription ends.
+* Cancelled: Removes or changes roles when a subscription ends.
 
 = How to Enable =
 
-* Purchase the premium version of the plugin via the official site https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
+* Purchase the premium version of the plugin via the [official site](https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/)
 
 * Upload and activate the premium plugin.
 
@@ -85,7 +83,10 @@ The premium version supports advanced functionality for WooCommerce Subscription
 
 = 1. What happens if a user purchases multiple products with different role assignments? =
 
-The plugin applies the highest-priority role based on your settings. You can configure priority rules in the settings.
+The plugin can be configured to add roles, or to replace roles.
+
+* If the plugin is configured to replace roles, the user will remain with the last-assigned role.
+* If the plugin is configured to add roles, all the roles will be assigned to the user. We recommend using a plugin like "Members" to manage multiple roles per user.
 
 = 2. Can I assign multiple roles to a single product? =
 
@@ -93,7 +94,7 @@ Yes, you can assign multiple roles. Users will gain all assigned roles upon purc
 
 = 3. How do I upgrade to the premium version? =
 
-Visit the official plugin page to purchase the premium version. After purchasing, install and activate it like the free version.
+Visit the [official plugin page](https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/) to purchase the premium version. After purchasing, install and activate it like the free version.
 
 == Troubleshooting ==
 
@@ -123,7 +124,7 @@ This plugin is distributed under the GNU General Public License v3. For details,
 
 Author: David Marín Carreño
 
-Website: https://davefx.com
+Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
 
