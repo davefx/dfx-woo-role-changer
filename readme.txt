@@ -4,7 +4,7 @@ Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
 Tested up to: 6.6
-Stable tag: 20250127
+Stable tag: 20250130
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
