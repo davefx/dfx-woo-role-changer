@@ -128,6 +128,11 @@ Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpre
 
 == Changelog ==
 
+= 20250130 =
+
+* If the plugin is configured to replace roles (not adding them), now we won't ever replace the administrator role after
+  a purchase if the user had this role before the purchase.
+
 = 20250127 =
 
 * Upgrading Freemius SDK

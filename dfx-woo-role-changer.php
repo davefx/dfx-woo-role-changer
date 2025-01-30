@@ -3,7 +3,7 @@
 /**
  * Plugin Name: DFX Automatic Role Changer for WooCommerce
  * Description: Allows the automatic assignation of roles to users on product purchases in WooCommerce
- * Version:     20250127
+ * Version:     20250130
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -23,7 +23,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20250127
+ * @version   20250130
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -339,6 +339,10 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
         ) {
             if ( !in_array( $new_role, $user->roles ) ) {
                 if ( $this->get_current_mode() === 'replace_roles' ) {
+                    // If current role is administrator, don't replace it
+                    if ( in_array( 'administrator', $user->roles ) ) {
+                        return;
+                    }
                     update_user_meta( $user->ID, 'dfxwcrc_old_roles', $user->roles );
                     $user->set_role( $new_role );
                 } else {
