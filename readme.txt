@@ -4,7 +4,7 @@ Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
 Tested up to: 6.6
-Stable tag: 20250130
+Stable tag: 20250203
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -21,7 +21,9 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 
 * Integrates seamlessly with WooCommerce.
 
-* Supports role management tied to [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/) (Premium).
+* *Premium*: Supports role management tied to subscription products, supporting [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/),
+  [YITH WooCommerce Subscription](https://wordpress.org/plugins/yith-woocommerce-subscription/) and
+  [WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/).
 
 == Installation ==
 
@@ -59,13 +61,17 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 
 == Premium Features ==
 
-= WooCommerce Subscriptions Integration =
+= Manages roles following the lifecycle of subscription products =
 
-The premium version supports advanced functionality for WooCommerce Subscriptions, assigning roles based on subscription status:
+The premium version supports advanced functionality for subscription products,
+supporting [WooCommerce Subscriptions](https://woocommerce.com/subscriptions/),
+[YITH WooCommerce Subscription](https://wordpress.org/plugins/yith-woocommerce-subscription/) and
+[WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/),
+assigning roles based on subscription status:
 
-* Active: Assigns a role when a subscription is active.
+* Active: Assigns a role when a subscription is activated.
 
-* Suspended: Updates the user role if a subscription is suspended.
+* Suspended: Updates the user role if a subscription is suspended, or is waiting for renewal.
 
 * Cancelled: Removes or changes roles when a subscription ends.
 
@@ -127,6 +133,10 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20250203 =
+
+* *Premium*: Added support for manage roles for [YITH Subscription for WooCommerce](https://wordpress.org/plugins/yith-woocommerce-subscription/) and [WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/).
 
 = 20250130 =
 

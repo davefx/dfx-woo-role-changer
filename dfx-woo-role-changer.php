@@ -3,7 +3,7 @@
 /**
  * Plugin Name: DFX Automatic Role Changer for WooCommerce
  * Description: Allows the automatic assignation of roles to users on product purchases in WooCommerce
- * Version:     20250130
+ * Version:     20250203
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -23,7 +23,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20250130
+ * @version   20250203
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -222,6 +222,27 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             } );
         }
 
+        public static function subscriptions_enabled() {
+            return class_exists( 'WC_Subscriptions' ) || class_exists( 'YITH_WC_Subscription' ) || class_exists( 'Subscriptions_For_WooCommerce' );
+        }
+
+        public static function is_subscription_product( $product_id ) {
+            $is_subscriptions_product = false;
+            if ( self::subscriptions_enabled() ) {
+                if ( class_exists( 'WC_Subscriptions' ) ) {
+                    $is_subscriptions_product |= WC_Subscriptions_Product::is_subscription( $product_id );
+                }
+                if ( class_exists( 'YITH_WC_Subscription' ) ) {
+                    $is_subscriptions_product |= YITH_WC_Subscription()->is_subscription( $product_id );
+                }
+                if ( class_exists( 'Subscriptions_For_WooCommerce' ) ) {
+                    $product = wc_get_product( $product_id );
+                    $is_subscriptions_product |= wps_sfw_check_product_is_subscription( $product );
+                }
+            }
+            return $is_subscriptions_product;
+        }
+
         public function load_i18n() {
             $plugin_rel_path = dirname( plugin_basename( __FILE__ ) ) . '/languages/';
             load_plugin_textdomain( 'dfx-woo-role-changer', false, $plugin_rel_path );
@@ -235,7 +256,7 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             echo '<div class="options_group">';
             $description = __( 'Role to be assigned to people purchasing this product.', 'dfx-woo-role-changer' );
             // If WooCommerce Subscriptions is installed, and this is a subscription product promote the Pro version
-            if ( class_exists( 'WC_Subscriptions' ) && WC_Subscriptions_Product::is_subscription( get_the_ID() ) ) {
+            if ( self::is_subscription_product( get_the_ID() ) ) {
                 if ( dfx_woo_role_changer_fs()->is_not_paying() ) {
                     $description .= __( ' The premium version of the plugin supports assigning/deassigning roles based on product subscription status. ', 'dfx-woo-role-changer' );
                     $description .= sprintf( __( '<a href="%s">Upgrade to Pro</a> to get this feature.', 'dfx-woo-role-changer' ), dfx_woo_role_changer_fs()->checkout_url() );
