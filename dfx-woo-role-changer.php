@@ -3,7 +3,7 @@
 /**
  * Plugin Name: DFX Automatic Role Changer for WooCommerce
  * Description: Allows the automatic assignation of roles to users on product purchases in WooCommerce
- * Version:     20250203
+ * Version:     20250204
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -23,7 +23,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20250203
+ * @version   20250204
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -31,6 +31,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+const DFX_WOO_ROLE_CHANGER_VERSION = '20250203';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
@@ -76,6 +77,10 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
     final class DfxWooRoleChanger {
         public $plugin_name = '';
 
+        public const PLUGIN_DIR_PATH = __DIR__;
+
+        public $PLUGIN_DIR_URL;
+
         /**
          * Returns the instance.
          *
@@ -96,6 +101,7 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
          * @since  1.0.0
          */
         private function __construct() {
+            $this->PLUGIN_DIR_URL = plugin_dir_url( __FILE__ );
             // Set plugin file, removing the need to use __FILE__
             if ( strpos( __FILE__, WP_PLUGIN_DIR ) !== false ) {
                 $this->plugin_name = str_replace( WP_PLUGIN_DIR . '/', '', wp_normalize_path( realpath( __FILE__ ) ) );
@@ -262,14 +268,16 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                     $description .= sprintf( __( '<a href="%s">Upgrade to Pro</a> to get this feature.', 'dfx-woo-role-changer' ), dfx_woo_role_changer_fs()->checkout_url() );
                 }
             }
-            woocommerce_wp_select( array(
+            woocommerce_wp_select( apply_filters( 'dfx_wrc_role_selector_args', array(
                 'id'          => 'dfxwcrc_role_assignment',
                 'value'       => get_post_meta( get_the_ID(), '_dfxwcrc_role_assignment', true ) ?? 'none',
                 'label'       => 'Assigned Role',
                 'desc_tip'    => true,
                 'description' => $description,
                 'options'     => $options,
-            ) );
+                'class'       => 'wc-enhanced-select',
+            ), get_the_ID() ) );
+            do_action( 'dfx_woo_role_changer_product_options' );
             echo '</div>';
         }
 
@@ -278,27 +286,33 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 return;
             }
             $available_roles = wp_roles()->get_names();
-            $assignment = sanitize_text_field( $_POST['dfxwcrc_role_assignment'] );
+            $assignment = apply_filters( 'dfx_wrc_product_new_role', sanitize_text_field( $_POST['dfxwcrc_role_assignment'] ) );
             if ( $assignment !== 'none' ) {
-                if ( array_key_exists( $assignment, $available_roles ) ) {
+                if ( apply_filters(
+                    'dfx_wrc_is_valid_role_value',
+                    array_key_exists( $assignment, $available_roles ),
+                    $assignment,
+                    $available_roles
+                ) ) {
                     update_post_meta( $id, '_dfxwcrc_role_assignment', $assignment );
                 }
             } else {
                 delete_post_meta( $id, '_dfxwcrc_role_assignment' );
             }
+            do_action( 'dfx_woo_role_changer_product_options_save', $id, $post );
         }
 
         public function role_assignment( $order_id ) {
             $roles = [];
             $order = wc_get_order( $order_id );
-            $product_items = $order->get_items();
+            $order_product_items = $order->get_items();
             $user_id = $order->get_user_id();
             if ( !$user_id ) {
                 return;
             }
             $user = new WP_User($user_id);
-            foreach ( $product_items as $product_item ) {
-                $role = get_post_meta( $product_item->get_product_id(), '_dfxwcrc_role_assignment', true );
+            foreach ( $order_product_items as $order_product_item ) {
+                $role = get_post_meta( $order_product_item->get_product_id(), '_dfxwcrc_role_assignment', true );
                 if ( empty( $role ) || empty( trim( $role ) ) ) {
                     continue;
                 }
@@ -309,6 +323,12 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                         $roles[] = $role_for_product;
                     }
                 }
+                $roles = apply_filters(
+                    'dfx_woo_role_changer_roles_for_product',
+                    $roles,
+                    $order_product_item,
+                    $order
+                );
             }
             if ( count( $roles ) == 0 ) {
                 return;
@@ -347,7 +367,7 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
         /**
          * @param WP_User $user
          * @param string $new_role
-         * @param WC_Order | null $order
+         * @param WC_Order | null $order Order object where the role change is being notified
          * @param string $note
          *
          * @return void
@@ -358,6 +378,12 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             $order = null,
             $note = ''
         ) {
+            $new_role = apply_filters(
+                'dfx_woo_role_changer_maybe_add_role_to_user',
+                $new_role,
+                $user,
+                $order
+            );
             if ( !in_array( $new_role, $user->roles ) ) {
                 if ( $this->get_current_mode() === 'replace_roles' ) {
                     // If current role is administrator, don't replace it
@@ -382,12 +408,19 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                     $order->add_order_note( $note );
                 }
             }
+            do_action(
+                'dfx_woo_role_changer_role_maybe_assigned',
+                $user,
+                $new_role,
+                $order->get_id()
+            );
         }
 
         /**
          * @param WP_User $user
          * @param string $new_role
-         * @param WC_Order | null $order
+         * @param WC_Order | null $order Order object where the role change is being notified
+         * @param string $note
          *
          * @return void
          */

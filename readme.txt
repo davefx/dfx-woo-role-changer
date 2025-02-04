@@ -4,7 +4,7 @@ Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
 Tested up to: 6.6
-Stable tag: 20250203
+Stable tag: 20250204
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -21,9 +21,13 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 
 * Integrates seamlessly with WooCommerce.
 
+* *Premium*: Allows defining, per product, a role validity period in days after the purchase, so the role granted in the purchase will be automatically removed after that period.
+
 * *Premium*: Supports role management tied to subscription products, supporting [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/),
   [YITH WooCommerce Subscription](https://wordpress.org/plugins/yith-woocommerce-subscription/) and
   [WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/).
+
+* *Premium*: Allows defining multiple roles per product.
 
 == Installation ==
 
@@ -49,17 +53,22 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 
 = Setting Up Role Assignments =
 
-* Go to WooCommerce > Settings > Role Changer.
+* Edit a product from your catalog.
 
-* Select a product from your catalog.
+* Choose the role (or several roles *PREMIUM*) to assign when the product is purchased.
 
-* Choose the role to assign when the product is purchased.
+* *Premium*: Define a role validity period in days after the purchase.
 
-* (Optional) Configure advanced settings to fine-tune role assignments.
+* In WooCommerce > Settings > Role Changer you can configure advanced settings to fine-tune role assignments, such as defining if the new role must be added to the user,
+  or if the new role should just replace the previous one.
 
 * Save changes.
 
 == Premium Features ==
+
+= Define Role Validity Periods =
+
+The premium version allows defining a role validity period in days after the purchase. The role granted in the purchase will be automatically removed after that period.
 
 = Manages roles following the lifecycle of subscription products =
 
@@ -94,11 +103,15 @@ The plugin can be configured to add roles, or to replace roles.
 * If the plugin is configured to replace roles, the user will remain with the last-assigned role.
 * If the plugin is configured to add roles, all the roles will be assigned to the user. We recommend using a plugin like "Members" to manage multiple roles per user.
 
-= 2. Can I assign multiple roles to a single product? =
+= 2. What happens if a user purchases a product granting a role several times? =
 
-Yes, you can assign multiple roles. Users will gain all assigned roles upon purchase.
+In the Premium version, the validity period for a purchase is added to the previously existing one.
 
-= 3. How do I upgrade to the premium version? =
+= 3. Can I assign multiple roles to a single product? =
+
+In the Premium version you can assign multiple roles. Users will gain all assigned roles upon purchase.
+
+= 4. How do I upgrade to the premium version? =
 
 Visit the [official plugin page](https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/) to purchase the premium version. After purchasing, install and activate it like the free version.
 
@@ -133,6 +146,14 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20250204 =
+
+* The role selector is now rendered as a Select2 dropdown, allowing an easier selection of roles.
+
+* *Premium*: Added support for roles with a validity period. The role granted in the purchase will be automatically removed after that period.
+
+* *Premium*: Added support for multiple roles per product.
 
 = 20250203 =
 
