@@ -4,7 +4,7 @@ Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
 Tested up to: 6.6
-Stable tag: 20250204
+Stable tag: 20250325
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -20,6 +20,8 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 * Automatically assign roles to users upon product purchase.
 
 * Integrates seamlessly with WooCommerce.
+
+* *Premium*: Supports the definition of different roles for variations in variable products.
 
 * *Premium*: Allows defining, per product, a role validity period in days after the purchase, so the role granted in the purchase will be automatically removed after that period.
 
@@ -146,6 +148,12 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20250325 =
+
+* *Premium*: Added support for definition of roles in variations of variable products.
+
+* *Premium*: In case of having one order with several products granting the same role, we can now select how to calculate the validity period (if defined).
 
 = 20250204 =
 

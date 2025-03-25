@@ -3,7 +3,7 @@
 /**
  * Plugin Name: DFX Automatic Role Changer for WooCommerce
  * Description: Allows the automatic assignation of roles to users on product purchases in WooCommerce
- * Version:     20250204
+ * Version:     20250325
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -23,7 +23,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20250204
+ * @version   20250325
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -31,7 +31,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-const DFX_WOO_ROLE_CHANGER_VERSION = '20250204';
+const DFX_WOO_ROLE_CHANGER_VERSION = '20250325';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
@@ -313,14 +313,13 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             $user = new WP_User($user_id);
             foreach ( $order_product_items as $order_product_item ) {
                 $role = get_post_meta( $order_product_item->get_product_id(), '_dfxwcrc_role_assignment', true );
-                if ( empty( $role ) || empty( trim( $role ) ) ) {
-                    continue;
-                }
-                $roles_for_product = explode( ',', $role );
-                foreach ( $roles_for_product as $role_for_product ) {
-                    $role_for_product = trim( $role_for_product );
-                    if ( $role_for_product !== 'none' && !empty( $role_for_product ) && !in_array( $role_for_product, $roles ) ) {
-                        $roles[] = $role_for_product;
+                if ( !empty( $role ) && !empty( trim( $role ) ) ) {
+                    $roles_for_product = explode( ',', $role );
+                    foreach ( $roles_for_product as $role_for_product ) {
+                        $role_for_product = trim( $role_for_product );
+                        if ( $role_for_product !== 'none' && !empty( $role_for_product ) && !in_array( $role_for_product, $roles ) ) {
+                            $roles[] = $role_for_product;
+                        }
                     }
                 }
                 $roles = apply_filters(
