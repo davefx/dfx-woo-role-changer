@@ -1,0 +1,15 @@
+# Source control
+.git
+.github
+.gitignore
+.gitattributes
+
+# wp.org assets (handled separately by the deploy action)
+.wordpress-org
+
+# CI / repo metadata
+.distignore
+.editorconfig
+
+# Legacy
+freemius-old

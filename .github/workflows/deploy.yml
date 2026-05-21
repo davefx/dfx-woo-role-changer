@@ -1,0 +1,22 @@
+name: Deploy to WordPress.org
+
+on:
+  push:
+    tags:
+      - '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+      - '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].[0-9]*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Deploy to wp.org SVN
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: dfx-woo-role-changer
