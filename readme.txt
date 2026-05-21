@@ -3,8 +3,8 @@ Contributors: DaveFX
 Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
-Tested up to: 6.6
-Stable tag: 20250325
+Tested up to: 7.0
+Stable tag: 20260521
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -148,6 +148,12 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260521 =
+
+* Upgraded Freemius SDK to 2.13.1.
+
+* Tested with WordPress 7.0.
 
 = 20250325 =
 
