@@ -12,6 +12,12 @@ jobs:
     name: Deploy to wp.org SVN
     runs-on: ubuntu-latest
     steps:
+      - name: Require tag ref
+        if: github.ref_type != 'tag'
+        run: |
+          echo "::error::This workflow deploys a tagged release. Use the 'Use workflow from' dropdown in the UI to pick a tag, or push a YYYYMMDD tag."
+          exit 1
+
       - uses: actions/checkout@v4
 
       - name: WordPress Plugin Deploy
