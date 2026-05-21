@@ -149,12 +149,6 @@ Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpre
 
 == Changelog ==
 
-= 20260521 =
-
-* Upgraded Freemius SDK to 2.13.1.
-
-* Tested with WordPress 7.0.
-
 = 20250325 =
 
 * *Premium*: Added support for definition of roles in variations of variable products.

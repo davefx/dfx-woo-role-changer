@@ -43,20 +43,21 @@ if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
                 // Include Freemius SDK.
                 require_once dirname( __FILE__ ) . '/freemius/start.php';
                 $dfx_woo_role_changer_fs = fs_dynamic_init( array(
-                    'id'             => '17666',
-                    'slug'           => 'dfx-woo-role-changer',
-                    'type'           => 'plugin',
-                    'public_key'     => 'pk_723cc0fd3221fd990e5aeda69cab4',
-                    'is_premium'     => false,
-                    'premium_suffix' => 'Premium',
-                    'has_addons'     => false,
-                    'has_paid_plans' => true,
-                    'menu'           => array(
+                    'id'               => '17666',
+                    'slug'             => 'dfx-woo-role-changer',
+                    'type'             => 'plugin',
+                    'public_key'       => 'pk_723cc0fd3221fd990e5aeda69cab4',
+                    'is_premium'       => false,
+                    'premium_suffix'   => 'Premium',
+                    'has_addons'       => false,
+                    'has_paid_plans'   => true,
+                    'menu'             => array(
                         'first-path' => 'plugins.php',
                         'contact'    => false,
                         'support'    => false,
                     ),
-                    'is_live'        => true,
+                    'is_live'          => true,
+                    'is_org_compliant' => true,
                 ) );
             }
             return $dfx_woo_role_changer_fs;
