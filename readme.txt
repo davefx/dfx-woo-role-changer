@@ -4,7 +4,7 @@ Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
 Tested up to: 7.0
-Stable tag: 20260521
+Stable tag: 20260522
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -148,6 +148,24 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260522 =
+
+* Fixed a deprecated Action Scheduler API call (`next()` → `get_date()`).
+
+* Defensive iteration over the user subscription list returned by YITH WooCommerce Subscription, preventing rare fatal errors on role unassignment.
+
+* Null-order guard in the internal `dfx_woo_role_changer_role_maybe_assigned` action so subscription paths no longer fatal when the associated order isn't available.
+
+* *Premium*: Fixed the Subscriptions For WooCommerce (WP Swings) integration under HPOS. Subscription status changes weren't triggering role assignments because the plugin was listening on hooks that don't fire under HPOS; switched to `woocommerce_new_order` / `woocommerce_update_order`.
+
+* Added a PHPUnit integration test suite covering the free and premium paths, including all three supported subscription providers.
+
+= 20260521 =
+
+* Upgraded Freemius SDK from 2.11.0 to 2.13.1.
+
+* Marked plugin as tested with WordPress 7.0.
 
 = 20250325 =
 
