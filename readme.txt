@@ -3,8 +3,9 @@ Contributors: DaveFX
 Donate link: https://paypal.me/davefx
 Tags: woocommerce, role
 Requires at least: 3.1
+Requires PHP: 8.0
 Tested up to: 7.0
-Stable tag: 20260522
+Stable tag: 20260522.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -148,6 +149,20 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260522.1 =
+
+* *Premium*: Fixed the "Multiple expiration mode" setting that was silently non-functional in the admin UI (the setting array was missing the `id` field, so WooCommerce never persisted it). The min/max option labels were also swapped — they now match the underlying behavior.
+
+* Fixed a race in *replace_roles* mode when a single user has two or more active role-granting orders. The plugin now tracks managed roles separately so subsequent grants don't overwrite the user's original roles, and refunds restore the right state regardless of the order in which they happen.
+
+* Declared a minimum PHP version (8.0) in the plugin header.
+
+* Fixed the `Domain Path` plugin header (was `/lang`, the directory is `/languages`).
+
+* *Premium*: User display names and URLs are now HTML-escaped in order notes.
+
+* Declared previously-dynamic properties on the premium class (avoids the PHP 8.2 deprecation notice).
 
 = 20260522 =
 

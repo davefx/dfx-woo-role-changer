@@ -3,11 +3,13 @@
 /**
  * Plugin Name: DFX Automatic Role Changer for WooCommerce
  * Description: Allows the automatic assignation of roles to users on product purchases in WooCommerce
- * Version:     20260522
+ * Version:     20260522.1
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
- * Domain Path: /lang
+ * Domain Path: /languages
+ *
+ * Requires PHP: 8.0
  *
  * WC requires at least: 3.0
  * WC tested up to: 8.4.0
@@ -23,7 +25,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20260522
+ * @version   20260522.1
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -31,7 +33,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-const DFX_WOO_ROLE_CHANGER_VERSION = '20260522';
+const DFX_WOO_ROLE_CHANGER_VERSION = '20260522.1';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
@@ -384,29 +386,43 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 $user,
                 $order
             );
-            if ( !in_array( $new_role, $user->roles ) ) {
-                if ( $this->get_current_mode() === 'replace_roles' ) {
-                    // If current role is administrator, don't replace it
-                    if ( in_array( 'administrator', $user->roles ) ) {
-                        return;
+            $role_was_added = false;
+            if ( $this->get_current_mode() === 'replace_roles' ) {
+                // Never replace the administrator role.
+                if ( in_array( 'administrator', $user->roles, true ) ) {
+                    return;
+                }
+                $managed = get_user_meta( $user->ID, 'dfxwcrc_managed_roles', true );
+                $managed = ( is_array( $managed ) ? $managed : array() );
+                if ( !in_array( $new_role, $managed, true ) ) {
+                    if ( empty( $managed ) && !metadata_exists( 'user', $user->ID, 'dfxwcrc_old_roles' ) ) {
+                        // First managed grant: preserve the user's original roles.
+                        update_user_meta( $user->ID, 'dfxwcrc_old_roles', $user->roles );
                     }
-                    update_user_meta( $user->ID, 'dfxwcrc_old_roles', $user->roles );
+                    $managed[] = $new_role;
+                    update_user_meta( $user->ID, 'dfxwcrc_managed_roles', $managed );
+                    // In replace_roles mode the user holds exactly one role at a time;
+                    // the most-recently granted managed role takes precedence.
                     $user->set_role( $new_role );
-                } else {
+                    $role_was_added = true;
+                }
+            } else {
+                if ( !in_array( $new_role, $user->roles, true ) ) {
                     $user->add_role( $new_role );
+                    $role_was_added = true;
                 }
-                if ( $order ) {
-                    if ( !empty( $note ) ) {
-                        $note .= ' ';
-                    }
-                    $note .= sprintf( 
-                        /* translators: 1: role name, 2: user login */
-                        __( 'Added role "%1$s" to user "%2$s"', 'dfx-woo-role-changer' ),
-                        $new_role,
-                        $user->user_login
-                     );
-                    $order->add_order_note( $note );
+            }
+            if ( $role_was_added && $order ) {
+                if ( !empty( $note ) ) {
+                    $note .= ' ';
                 }
+                $note .= sprintf( 
+                    /* translators: 1: role name, 2: user login */
+                    __( 'Added role "%1$s" to user "%2$s"', 'dfx-woo-role-changer' ),
+                    $new_role,
+                    $user->user_login
+                 );
+                $order->add_order_note( $note );
             }
             do_action(
                 'dfx_woo_role_changer_role_maybe_assigned',
@@ -430,31 +446,47 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             $order = null,
             $note = ''
         ) {
-            if ( in_array( $role, $user->roles, true ) ) {
-                if ( $this->get_current_mode() === 'replace_roles' ) {
-                    $old_roles = get_user_meta( $user->ID, 'dfxwcrc_old_roles', true );
-                    if ( $old_roles ) {
+            $role_was_removed = false;
+            if ( $this->get_current_mode() === 'replace_roles' ) {
+                $managed = get_user_meta( $user->ID, 'dfxwcrc_managed_roles', true );
+                $managed = ( is_array( $managed ) ? $managed : array() );
+                if ( in_array( $role, $managed, true ) ) {
+                    $managed = array_values( array_diff( $managed, array($role) ) );
+                    $role_was_removed = true;
+                    if ( empty( $managed ) ) {
+                        // No managed roles remain; restore the user's original roles.
+                        $old_roles = get_user_meta( $user->ID, 'dfxwcrc_old_roles', true );
                         $user->set_role( '' );
-                        foreach ( $old_roles as $old_role ) {
-                            $user->add_role( $old_role );
+                        if ( is_array( $old_roles ) ) {
+                            foreach ( $old_roles as $old_role ) {
+                                $user->add_role( $old_role );
+                            }
                         }
                         delete_user_meta( $user->ID, 'dfxwcrc_old_roles' );
+                        delete_user_meta( $user->ID, 'dfxwcrc_managed_roles' );
+                    } else {
+                        // Other managed roles still active; fall back to the most recent.
+                        update_user_meta( $user->ID, 'dfxwcrc_managed_roles', $managed );
+                        $user->set_role( end( $managed ) );
                     }
-                } else {
+                }
+            } else {
+                if ( in_array( $role, $user->roles, true ) ) {
                     $user->remove_role( $role );
+                    $role_was_removed = true;
                 }
-                if ( $order ) {
-                    if ( !empty( $note ) ) {
-                        $note .= ' ';
-                    }
-                    $note .= sprintf( 
-                        /* translators: 1: role name, 2: user login */
-                        __( 'Removed role "%1$s" from user "%2$s".', 'dfx-woo-role-changer' ),
-                        $role,
-                        $user->user_login
-                     );
-                    $order->add_order_note( $note );
+            }
+            if ( $role_was_removed && $order ) {
+                if ( !empty( $note ) ) {
+                    $note .= ' ';
                 }
+                $note .= sprintf( 
+                    /* translators: 1: role name, 2: user login */
+                    __( 'Removed role "%1$s" from user "%2$s".', 'dfx-woo-role-changer' ),
+                    $role,
+                    $user->user_login
+                 );
+                $order->add_order_note( $note );
             }
         }
 
