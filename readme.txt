@@ -5,7 +5,7 @@ Tags: woocommerce, role
 Requires at least: 3.1
 Requires PHP: 8.0
 Tested up to: 7.0
-Stable tag: 20260522.2
+Stable tag: 20260522.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -38,7 +38,7 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
 
 * WordPress 5.0 or higher.
 
-* WooCommerce 9.4 or higher (tested up to version 10.7).
+* WooCommerce 8.0 or higher (tested up to version 10.7).
 
 = Steps =
 
@@ -149,6 +149,12 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260522.3 =
+
+* Widened the supported WooCommerce range: now works on WC 8.0+ (previously implicitly required WC 9.5+). Inlined the `Automattic\WooCommerce\Enums\OrderStatus` constants to plain strings and gated `Automattic\WooCommerce\Utilities\OrderUtil` with `class_exists`, so older WooCommerce installs no longer fatal-error.
+
+* CI now also runs the test suite against WooCommerce 8.0, 9.5, and 10.7 in addition to the four PHP versions.
 
 = 20260522.2 =
 
