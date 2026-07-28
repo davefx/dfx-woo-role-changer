@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Plugin Name: DFX Automatic Role Changer for WooCommerce
- * Description: Allows the automatic assignation of roles to users on product purchases in WooCommerce
- * Version:     20260522.3
+ * Plugin Name: Membership & User Roles for WooCommerce (Automatic Role Changer)
+ * Description: Sync user roles with memberships and subscriptions. Grant access on purchase, revoke on expiry, and restrict your store by role.
+ * Version:     20260728
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -25,7 +25,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20260522.3
+ * @version   20260728
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -33,7 +33,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-const DFX_WOO_ROLE_CHANGER_VERSION = '20260522.3';
+const DFX_WOO_ROLE_CHANGER_VERSION = '20260728';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
@@ -112,6 +112,9 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 $this->plugin_name = $this->get_plugin_path_with_symlinks();
             }
             $this->registerHooks();
+            // MemberPress bridge. Ships in both builds — it gates itself on
+            // MemberPress being present, and on Freemius for its premium parts.
+            require_once dirname( __FILE__ ) . '/dfx-woo-role-changer-memberpress.php';
         }
 
         function get_plugin_path_with_symlinks() {
@@ -268,7 +271,11 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             if ( self::is_subscription_product( get_the_ID() ) ) {
                 if ( dfx_woo_role_changer_fs()->is_not_paying() ) {
                     $description .= __( ' The premium version of the plugin supports assigning/deassigning roles based on product subscription status. ', 'dfx-woo-role-changer' );
-                    $description .= sprintf( __( '<a href="%s">Upgrade to Pro</a> to get this feature.', 'dfx-woo-role-changer' ), dfx_woo_role_changer_fs()->checkout_url() );
+                    $description .= sprintf( 
+                        /* translators: %s: checkout URL */
+                        __( '<a href="%s">Upgrade to Pro</a> to get this feature.', 'dfx-woo-role-changer' ),
+                        dfx_woo_role_changer_fs()->checkout_url()
+                     );
                 }
             }
             woocommerce_wp_select( apply_filters( 'dfx_wrc_role_selector_args', array(
@@ -562,7 +569,11 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                     'name'     => __( 'Unlock Premium Features', 'dfx-woo-role-changer' ),
                     'type'     => 'title',
                     'desc_tip' => false,
-                    'desc'     => sprintf( __( '<a href="%s"><small>Unlock Premium Features</small></a>' ), dfx_woo_role_changer_fs()->checkout_url() ),
+                    'desc'     => sprintf( 
+                        /* translators: %s: checkout URL */
+                        __( '<a href="%s"><small>Unlock Premium Features</small></a>', 'dfx-woo-role-changer' ),
+                        dfx_woo_role_changer_fs()->checkout_url()
+                     ),
                     'id'       => 'dfx_woo_role_changer_premium_message',
                 ];
             }

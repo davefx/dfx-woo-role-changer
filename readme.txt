@@ -1,20 +1,20 @@
-=== DFX Automatic Role Changer for WooCommerce ===
+=== Membership & User Roles for WooCommerce (Automatic Role Changer) ===
 Contributors: DaveFX
 Donate link: https://paypal.me/davefx
-Tags: woocommerce, role
+Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 3.1
 Requires PHP: 8.0
 Tested up to: 7.0
-Stable tag: 20260522.3
+Stable tag: 20260728
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
 
-This plugin allows the association of a role to a WooCommerce product so the role is assigned to a registered user when the product is purchased.
+Sync user roles with memberships and subscriptions. Grant access on purchase, revoke on expiry, and restrict your store by role.
 
 == Overview ==
 
-The DFX Automatic Role Changer for WooCommerce plugin automates the assignment of user roles based on product purchases. This powerful tool streamlines store management by ensuring users are automatically assigned the appropriate roles, enhancing membership sites, subscription-based models, and more.
+The Membership & User Roles for WooCommerce plugin automates the assignment of user roles based on product purchases. This powerful tool streamlines store management by ensuring users are automatically assigned the appropriate roles, enhancing membership sites, subscription-based models, and more.
 
 == Features ==
 
@@ -31,6 +31,14 @@ The DFX Automatic Role Changer for WooCommerce plugin automates the assignment o
   [WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/).
 
 * *Premium*: Allows defining multiple roles per product.
+
+* Syncs MemberPress membership state to WordPress roles, continuously — the direction other integrations don't cover. The free version syncs one membership level.
+
+* *Premium*: Unlimited MemberPress levels, several roles per membership, and mapping of every membership state (pending, active, suspended, cancelled, expired).
+
+* *Premium*: Restricts your store by role — hides products and categories from the catalog and search, denies direct URL access, blocks add-to-cart, and sets per-role prices, payment gateways and shipping methods.
+
+* *Premium*: Retroactive sync — a batched admin tool that aligns the roles of members who already existed before the mapping was configured. Safe to re-run.
 
 == Installation ==
 
@@ -149,6 +157,26 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260728 =
+
+* Renamed the plugin to "Membership & User Roles for WooCommerce (Automatic Role Changer)". The slug, text domain and settings are unchanged, so nothing needs reconfiguring on update.
+
+* New: syncs MemberPress membership state to WordPress roles, continuously. This is the direction the existing WooCommerce/MemberPress integrations don't cover. The free version syncs a single membership level while the membership is active.
+
+* *Premium*: unlimited MemberPress levels, several roles per membership, and a mapping for every membership state (pending, active, suspended, cancelled, expired). Roles are granted when a membership enters a state and revoked when it leaves it. A role the user earned through an order is never revoked by the bridge.
+
+* *Premium*: restrict your store by role. Restricted products and categories are hidden from the catalog and from search, their URLs are denied (404 or a redirect to the shop, configurable), add-to-cart is blocked, and prices, payment gateways and shipping methods can each be limited per role. Users who can manage WooCommerce are never restricted.
+
+* *Premium*: retroactive sync. An admin tool under WooCommerce that aligns the roles of members who already existed before the mapping was configured. It runs in batches with a progress bar, resumes where it left off if the page is reloaded, and is safe to run more than once.
+
+* Added Spanish (es_ES and es_CL) translations, complete for every string.
+
+* Fixed a translatable string that carried no text domain, so its translation was never applied.
+
+* Numbered the placeholders in three order-note strings that had unnumbered ones, so translators can reorder them.
+
+* Added an end-to-end test suite driven against a real WordPress with MemberPress installed, alongside the existing unit tests.
 
 = 20260522.3 =
 
