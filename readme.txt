@@ -2,10 +2,10 @@
 Contributors: DaveFX
 Donate link: https://paypal.me/davefx
 Tags: membership, user roles, subscriptions, access control, restrict content
-Requires at least: 3.1
+Requires at least: 6.2
 Requires PHP: 8.0
-Tested up to: 7.0
-Stable tag: 20260728
+Tested up to: 7.1
+Stable tag: 20260813
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -16,23 +16,23 @@ Sync user roles with memberships and subscriptions. Grant access on purchase, re
 
 The Membership & User Roles for WooCommerce plugin automates the assignment of user roles based on product purchases. This powerful tool streamlines store management by ensuring users are automatically assigned the appropriate roles, enhancing membership sites, subscription-based models, and more.
 
+It also bridges [MemberPress](https://memberpress.com/) to WordPress roles: a membership's state drives the role, continuously, so access granted in MemberPress is reflected wherever your site checks roles.
+
 == Features ==
 
 * Automatically assign roles to users upon product purchase.
 
 * Integrates seamlessly with WooCommerce.
 
+* Syncs [MemberPress](https://memberpress.com/) membership state to WordPress roles, continuously — the direction other integrations don't cover. The free version syncs one membership level.
+
 * *Premium*: Supports the definition of different roles for variations in variable products.
 
 * *Premium*: Allows defining, per product, a role validity period in days after the purchase, so the role granted in the purchase will be automatically removed after that period.
 
-* *Premium*: Supports role management tied to subscription products, supporting [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/),
-  [YITH WooCommerce Subscription](https://wordpress.org/plugins/yith-woocommerce-subscription/) and
-  [WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/).
+* *Premium*: Supports role management tied to subscription products, supporting [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/), [YITH WooCommerce Subscription](https://wordpress.org/plugins/yith-woocommerce-subscription/) and [WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/).
 
 * *Premium*: Allows defining multiple roles per product.
-
-* Syncs MemberPress membership state to WordPress roles, continuously — the direction other integrations don't cover. The free version syncs one membership level.
 
 * *Premium*: Unlimited MemberPress levels, several roles per membership, and mapping of every membership state (pending, active, suspended, cancelled, expired).
 
@@ -44,7 +44,7 @@ The Membership & User Roles for WooCommerce plugin automates the assignment of u
 
 = Prerequisites =
 
-* WordPress 5.0 or higher.
+* WordPress 6.2 or higher.
 
 * WooCommerce 8.0 or higher (tested up to version 10.7).
 
@@ -70,8 +70,7 @@ The Membership & User Roles for WooCommerce plugin automates the assignment of u
 
 * *Premium*: Define a role validity period in days after the purchase.
 
-* In WooCommerce > Settings > Role Changer you can configure advanced settings to fine-tune role assignments, such as defining if the new role must be added to the user,
-  or if the new role should just replace the previous one.
+* In WooCommerce > Settings > Role Changer you can configure advanced settings to fine-tune role assignments, such as defining if the new role must be added to the user, or if the new role should just replace the previous one.
 
 * Save changes.
 
@@ -83,11 +82,7 @@ The premium version allows defining a role validity period in days after the pur
 
 = Manages roles following the lifecycle of subscription products =
 
-The premium version supports advanced functionality for subscription products,
-supporting [WooCommerce Subscriptions](https://woocommerce.com/subscriptions/),
-[YITH WooCommerce Subscription](https://wordpress.org/plugins/yith-woocommerce-subscription/) and
-[WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/),
-assigning roles based on subscription status:
+The premium version supports advanced functionality for subscription products, supporting [WooCommerce Subscriptions](https://woocommerce.com/subscriptions/), [YITH WooCommerce Subscription](https://wordpress.org/plugins/yith-woocommerce-subscription/) and [WP Swings Subscriptions for WooCommerce](https://wordpress.org/plugins/subscriptions-for-woocommerce/), assigning roles based on subscription status:
 
 * Active: Assigns a role when a subscription is activated.
 
@@ -157,6 +152,18 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260813 =
+
+* No functional changes. This release only updates the compatibility declarations.
+
+* Tested with WordPress 7.1.
+
+* Raised the declared minimum WordPress version from 5.0 to 6.2. This is not a new restriction: the plugin already required WooCommerce 8.0, and WooCommerce 8.0 itself requires WordPress 6.2, so no install below 6.2 could ever have run it. The old value simply advertised a combination that does not exist.
+
+* Added the `Requires Plugins: woocommerce` header, so WordPress 6.5 and later refuses activation when WooCommerce is missing instead of activating and failing later.
+
+* Presentation fixes in this readme: paragraphs that were wrapped across several lines rendered as broken lines on the plugin page, MemberPress is now linked on first mention, and the MemberPress sync is listed with the free features rather than among the premium ones.
 
 = 20260728 =
 
@@ -248,8 +255,7 @@ Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpre
 
 = 20250130 =
 
-* If the plugin is configured to replace roles (not adding them), now we won't ever replace the administrator role after
-  a purchase if the user had this role before the purchase.
+* If the plugin is configured to replace roles (not adding them), now we won't ever replace the administrator role after a purchase if the user had this role before the purchase.
 
 = 20250127 =
 
