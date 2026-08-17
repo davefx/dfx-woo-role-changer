@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Membership & User Roles for WooCommerce (Automatic Role Changer) plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Membership & User Roles for WooCommerce (Automatic Role Changer) 20260522.2\n"
+"Project-Id-Version: Membership & User Roles for WooCommerce (Automatic Role Changer) 20260813\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dfx-woo-role-changer\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-28T05:22:21+00:00\n"
+"POT-Creation-Date: 2026-08-17T06:08:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: dfx-woo-role-changer\n"
@@ -54,40 +54,40 @@ msgstr ""
 msgid "Expired"
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:261
+#: dfx-woo-role-changer-memberpress.php:281
 msgid "Role assignment"
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:280
+#: dfx-woo-role-changer-memberpress.php:300
 msgid "The free version syncs a single membership level, and another membership is already mapped."
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:286
+#: dfx-woo-role-changer-memberpress.php:306
 msgid "Upgrade to Pro to map unlimited membership levels."
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:294
-#: dfx-woo-role-changer.php:263
+#: dfx-woo-role-changer-memberpress.php:314
+#: dfx-woo-role-changer.php:266
 msgid "None"
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:336
+#: dfx-woo-role-changer-memberpress.php:356
 msgid "Roles are granted when the membership enters the state and revoked when it leaves it."
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:342
+#: dfx-woo-role-changer-memberpress.php:362
 msgid "Upgrade to Pro for unlimited levels, several roles per membership, and mapping of every membership state."
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:414
+#: dfx-woo-role-changer-memberpress.php:434
 msgid "MemberPress detected. Map membership states to roles from each membership's edit screen."
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:418
+#: dfx-woo-role-changer-memberpress.php:438
 msgid "The free version syncs a single membership level, granting a role while the membership is active."
 msgstr ""
 
-#: dfx-woo-role-changer-memberpress.php:425
+#: dfx-woo-role-changer-memberpress.php:445
 msgid "MemberPress integration"
 msgstr ""
 
@@ -334,86 +334,102 @@ msgstr ""
 msgid "The sync failed. Nothing was left half-applied; you can run it again."
 msgstr ""
 
-#: dfx-woo-role-changer.php:267
+#: dfx-woo-role-changer.php:270
 msgid "Role to be assigned to people purchasing this product."
 msgstr ""
 
-#: dfx-woo-role-changer.php:272
+#: dfx-woo-role-changer.php:275
 msgid " The role will be assigned and deassigned following the status of the subscription. "
 msgstr ""
 
-#: dfx-woo-role-changer.php:275
+#: dfx-woo-role-changer.php:278
 msgid " The premium version of the plugin supports assigning/deassigning roles based on product subscription status. "
 msgstr ""
 
 #. translators: %s: checkout URL
-#: dfx-woo-role-changer.php:278
+#: dfx-woo-role-changer.php:281
 #, php-format
 msgid "<a href=\"%s\">Upgrade to Pro</a> to get this feature."
 msgstr ""
 
 #. translators: 1: role name, 2: user login
-#: dfx-woo-role-changer.php:485
+#: dfx-woo-role-changer.php:488
 #, php-format
 msgid "Added role \"%1$s\" to user \"%2$s\""
 msgstr ""
 
 #. translators: 1: role name, 2: user login
-#: dfx-woo-role-changer.php:543
+#: dfx-woo-role-changer.php:546
 #, php-format
 msgid "Removed role \"%1$s\" from user \"%2$s\"."
 msgstr ""
 
-#: dfx-woo-role-changer.php:553
+#: dfx-woo-role-changer.php:556
 msgid "Settings"
 msgstr ""
 
-#: dfx-woo-role-changer.php:588
+#: dfx-woo-role-changer.php:591
 msgid "DFX Role Changer Settings"
 msgstr ""
 
-#: dfx-woo-role-changer.php:600
+#: dfx-woo-role-changer.php:603
 msgid "Role assignment mode"
 msgstr ""
 
-#: dfx-woo-role-changer.php:604
+#: dfx-woo-role-changer.php:607
 msgid "Add/Remove Roles"
 msgstr ""
 
-#: dfx-woo-role-changer.php:605
+#: dfx-woo-role-changer.php:608
 msgid "Replace Roles"
 msgstr ""
 
-#: dfx-woo-role-changer.php:607
+#: dfx-woo-role-changer.php:610
 msgid "Choose the mode of role assignment. If you are using a plugin that allows managing multiple roles for a given user, you can choose to add or remove roles. If not, you should choose to replace the role."
 msgstr ""
 
-#: dfx-woo-role-changer.php:612
+#: dfx-woo-role-changer.php:615
 msgid "When to grant roles"
 msgstr ""
 
-#: dfx-woo-role-changer.php:616
+#: dfx-woo-role-changer.php:619
 msgid "On order payment"
 msgstr ""
 
-#: dfx-woo-role-changer.php:617
+#: dfx-woo-role-changer.php:620
 msgid "When order gets to Processing state"
 msgstr ""
 
-#: dfx-woo-role-changer.php:618
+#: dfx-woo-role-changer.php:621
 msgid "When order gets to Completed state"
 msgstr ""
 
-#: dfx-woo-role-changer.php:621
+#: dfx-woo-role-changer.php:624
 msgid "When in the order lifecycle the role should be granted. If you choose more than one option, the role will be granted at all the selected moments."
 msgstr ""
 
-#: dfx-woo-role-changer.php:629
+#: dfx-woo-role-changer.php:638
+msgid "Restrict your store by role: hide products and categories from the catalog and search, deny direct URL access, block add-to-cart, and set prices, payment gateways and shipping methods per role."
+msgstr ""
+
+#: dfx-woo-role-changer.php:639
+msgid "Retroactive sync: align the roles of members who already existed before you configured the mapping, in batches and safe to re-run."
+msgstr ""
+
+#: dfx-woo-role-changer.php:640
+msgid "Unlimited MemberPress levels, several roles per membership, and a mapping for every membership state."
+msgstr ""
+
+#: dfx-woo-role-changer.php:641
+msgid "Roles tied to subscription products, a role expiry period per product, roles per variation and several roles per product."
+msgstr ""
+
+#: dfx-woo-role-changer.php:650
 msgid "Unlock Premium Features"
 msgstr ""
 
 #. translators: %s: checkout URL
-#: dfx-woo-role-changer.php:634
+#: dfx-woo-role-changer.php:655
 #, php-format
 msgid "<a href=\"%s\"><small>Unlock Premium Features</small></a>"
 msgstr ""

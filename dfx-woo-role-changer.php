@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Membership & User Roles for WooCommerce (Automatic Role Changer)
  * Description: Sync user roles with memberships and subscriptions. Grant access on purchase, revoke on expiry, and restrict your store by role.
- * Version:     20260813
+ * Version:     20260817
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -28,7 +28,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20260813
+ * @version   20260817
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -36,7 +36,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-const DFX_WOO_ROLE_CHANGER_VERSION = '20260813';
+const DFX_WOO_ROLE_CHANGER_VERSION = '20260817';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
@@ -565,17 +565,32 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 'desc'    => __( 'When in the order lifecycle the role should be granted. If you choose more than one option, the role will be granted at all the selected moments.', 'dfx-woo-role-changer' ),
                 'id'      => 'dfx_woo_role_changer_grant_moment',
             ];
-            // Message for non-premium users
+            // Message for non-premium users.
+            //
+            // Gated on is_not_paying() and NOT on can_use_premium_code__premium_only():
+            // this block has to survive into the free build, which is the only place
+            // it is ever shown. Several of the features listed below live in files
+            // marked @fs_premium_only, so they leave no trace in the free build at all
+            // — without this list a free user has no way to learn they exist.
             if ( dfx_woo_role_changer_fs()->is_not_paying() ) {
-                // Adds a direct checkout link in the free version.
+                $premium_features = [
+                    __( 'Restrict your store by role: hide products and categories from the catalog and search, deny direct URL access, block add-to-cart, and set prices, payment gateways and shipping methods per role.', 'dfx-woo-role-changer' ),
+                    __( 'Retroactive sync: align the roles of members who already existed before you configured the mapping, in batches and safe to re-run.', 'dfx-woo-role-changer' ),
+                    __( 'Unlimited MemberPress levels, several roles per membership, and a mapping for every membership state.', 'dfx-woo-role-changer' ),
+                    __( 'Roles tied to subscription products, a role expiry period per product, roles per variation and several roles per product.', 'dfx-woo-role-changer' )
+                ];
+                $list = '';
+                foreach ( $premium_features as $feature ) {
+                    $list .= '<li>' . esc_html( $feature ) . '</li>';
+                }
                 $settings['dfx_woo_role_changer_premium_message'] = [
                     'name'     => __( 'Unlock Premium Features', 'dfx-woo-role-changer' ),
                     'type'     => 'title',
                     'desc_tip' => false,
-                    'desc'     => sprintf( 
+                    'desc'     => '<ul style="list-style:disc;margin-left:1.5em">' . $list . '</ul>' . sprintf( 
                         /* translators: %s: checkout URL */
                         __( '<a href="%s"><small>Unlock Premium Features</small></a>', 'dfx-woo-role-changer' ),
-                        dfx_woo_role_changer_fs()->checkout_url()
+                        esc_url( dfx_woo_role_changer_fs()->checkout_url() )
                      ),
                     'id'       => 'dfx_woo_role_changer_premium_message',
                 ];

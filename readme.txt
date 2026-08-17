@@ -5,7 +5,7 @@ Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 6.2
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 20260813
+Stable tag: 20260817
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -152,6 +152,12 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260817 =
+
+* The settings screen now describes what the premium version adds, including the store restriction by role and the retroactive sync. Those two live in premium-only files, so nothing about them was visible from the free version's admin.
+
+* Spanish (es_ES and es_CL) translations updated for the new strings; both remain complete.
 
 = 20260813 =
 
