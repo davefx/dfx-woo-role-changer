@@ -5,7 +5,7 @@ Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 6.2
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 20260817
+Stable tag: 20260822
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -46,7 +46,7 @@ It also bridges [MemberPress](https://memberpress.com/) to WordPress roles: a me
 
 * WordPress 6.2 or higher.
 
-* WooCommerce 8.0 or higher (tested up to version 10.7).
+* WooCommerce 8.0 or higher (tested up to version 11.0).
 
 = Steps =
 
@@ -152,6 +152,12 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260822 =
+
+* No functional changes. Tested with WooCommerce 11, so WooCommerce no longer shows its "untested with your version" notice.
+
+* The test suite now runs against WooCommerce 11 as well, across the four supported PHP versions, so the declaration stays backed by CI rather than by a single run.
 
 = 20260817 =
 
