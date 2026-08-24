@@ -5,7 +5,7 @@ Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 6.2
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 20260822
+Stable tag: 20260824
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -152,6 +152,12 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260824 =
+
+* *Premium*: the retroactive sync now covers subscriptions, not just MemberPress. If you configure a role on a subscription product today, your existing subscribers get it on the next run instead of waiting for their subscription to change status, which on an annual plan can be months away. Works with WooCommerce Subscriptions, YITH WooCommerce Subscription and Subscriptions for WooCommerce.
+
+* *Premium*: the retroactive sync screen no longer requires MemberPress. It lists whichever sources are present and syncs from those.
 
 = 20260822 =
 

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Membership & User Roles for WooCommerce (Automatic Role Changer)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dfx-woo-role-changer\n"
-"POT-Creation-Date: 2026-08-17T06:08:05+00:00\n"
+"POT-Creation-Date: 2026-08-24T03:17:19+00:00\n"
 "PO-Revision-Date: 2025-01-29 02:48:46+0000\n"
 "Language: es_CL\n"
 "MIME-Version: 1.0\n"
@@ -292,43 +292,51 @@ msgstr "Envío: %s"
 msgid "Roles allowed to use this shipping method. Empty means everyone."
 msgstr "Perfiles autorizados a usar este método de envío. Vacío significa todos."
 
-#: dfx-woo-role-changer-retroactive.php:110
-#: dfx-woo-role-changer-retroactive.php:111
-#: dfx-woo-role-changer-retroactive.php:125
+#: dfx-woo-role-changer-retroactive.php:216
+#: dfx-woo-role-changer-retroactive.php:217
+#: dfx-woo-role-changer-retroactive.php:231
 msgid "Retroactive role sync"
 msgstr "Sincronización retroactiva de perfiles"
 
-#: dfx-woo-role-changer-retroactive.php:129
-msgid "MemberPress is not active, so there is nothing to sync from."
-msgstr "MemberPress no está activo, así que no hay nada desde donde sincronizar."
+#: dfx-woo-role-changer-retroactive.php:235
+msgid "Nothing to sync from: neither MemberPress nor a supported subscription plugin is active."
+msgstr "No hay nada desde donde sincronizar: ni MemberPress ni ningún plugin de suscripciones compatible está activo."
 
-#: dfx-woo-role-changer-retroactive.php:139
+#. translators: %d: number of mapped memberships
+#: dfx-woo-role-changer-retroactive.php:250
+#, fuzzy, php-format
+msgid "%d mapped MemberPress membership"
+msgid_plural "%d mapped MemberPress memberships"
+msgstr[0] "%d membresía de MemberPress asignada"
+msgstr[1] "%d membresías de MemberPress asignadas"
+
+#: dfx-woo-role-changer-retroactive.php:262
 msgid "No membership has a role mapping yet. Configure one on a membership edit screen first."
 msgstr "Todavía no hay ninguna membresía con perfiles asignados. Configura una primero en la pantalla de edición de una membresía."
 
-#. translators: %d: number of memberships
-#: dfx-woo-role-changer-retroactive.php:149
+#. translators: %s: comma separated list of sources, e.g. "2 mapped MemberPress memberships, WooCommerce Subscriptions"
+#: dfx-woo-role-changer-retroactive.php:272
 #, php-format
-msgid "This aligns every existing user's roles with their current MemberPress state, across %d mapped membership(s). It is safe to run more than once."
-msgstr "Esto alinea los perfiles de todos los usuarios existentes con su estado actual en MemberPress, en %d membresía(s) asignada(s). Se puede ejecutar más de una vez sin problema."
+msgid "This aligns every existing user's roles with what they currently hold in: %s. It is safe to run more than once."
+msgstr "Esto alinea los perfiles de todos los usuarios existentes con lo que tienen actualmente en: %s. Se puede ejecutar más de una vez sin problema."
 
-#: dfx-woo-role-changer-retroactive.php:157
+#: dfx-woo-role-changer-retroactive.php:280
 msgid "Run retroactive sync"
 msgstr "Ejecutar sincronización retroactiva"
 
 #. translators: 1: users processed so far, 2: total users
-#: dfx-woo-role-changer-retroactive.php:183
+#: dfx-woo-role-changer-retroactive.php:306
 #, php-format
 msgid "%1$d of %2$d users processed."
 msgstr "%1$d de %2$d usuarios procesados."
 
 #. translators: 1: users processed, 2: roles granted, 3: roles revoked
-#: dfx-woo-role-changer-retroactive.php:185
+#: dfx-woo-role-changer-retroactive.php:308
 #, php-format
 msgid "Done. %1$d users processed, %2$d roles granted, %3$d roles revoked."
 msgstr "Hecho. %1$d usuarios procesados, %2$d perfiles concedidos, %3$d perfiles retirados."
 
-#: dfx-woo-role-changer-retroactive.php:186
+#: dfx-woo-role-changer-retroactive.php:309
 msgid "The sync failed. Nothing was left half-applied; you can run it again."
 msgstr "La sincronización ha fallado. No ha quedado nada a medias; puedes volver a ejecutarla."
 
@@ -431,6 +439,13 @@ msgstr "Desbloquear características Premium"
 #, php-format
 msgid "<a href=\"%s\"><small>Unlock Premium Features</small></a>"
 msgstr "<a href=\"%s\"><small>Desbloquear características Premium</small></a>"
+
+#~ msgid "MemberPress is not active, so there is nothing to sync from."
+#~ msgstr "MemberPress no está activo, así que no hay nada desde donde sincronizar."
+
+#, php-format
+#~ msgid "This aligns every existing user's roles with their current MemberPress state, across %d mapped membership(s). It is safe to run more than once."
+#~ msgstr "Esto alinea los perfiles de todos los usuarios existentes con su estado actual en MemberPress, en %d membresía(s) asignada(s). Se puede ejecutar más de una vez sin problema."
 
 #~ msgid "Allows the automatic assignation of roles to users on product purchases in WooCommerce"
 #~ msgstr "Permite la asignación automática de perfiles a usuarios a partir de la compra de productos en WooCommerce"
