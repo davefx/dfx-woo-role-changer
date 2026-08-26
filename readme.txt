@@ -5,7 +5,7 @@ Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 6.2
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 20260824
+Stable tag: 20260826
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -152,6 +152,20 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260826 =
+
+**Behaviour change in "Replace Roles" mode. Read this if you use that mode.**
+
+*What changed:* until now, granting a role in Replace Roles mode wiped every role the user had. From this version it replaces only the roles this plugin granted, plus the role the user had when the plugin first acted on them. Any role a *different* plugin gave the user is kept.
+
+*Why:* wiping everything destroyed roles other plugins were actively managing — WooCommerce Subscriptions' subscriber role, Members, MemberPress, anything that assigns roles. The other plugin restored its role on its next event, this one wiped it again on the next grant, and the two fought indefinitely. The user's role ended up depending on which plugin ran last.
+
+*What you will notice:* if this is the only plugin managing roles on your site, nothing changes at all. If another one is, its roles now survive instead of disappearing.
+
+*If you actually want a single role and nothing else*, a site can restore the old behaviour with the new `dfx_woo_role_changer_foreign_roles` filter, returning an empty array.
+
+No provider is detected or named: a role counts as foreign simply because this plugin never granted it.
 
 = 20260824 =
 
