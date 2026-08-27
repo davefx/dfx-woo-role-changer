@@ -5,7 +5,7 @@ Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 6.2
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 20260826
+Stable tag: 20260827
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -152,6 +152,12 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20260827 =
+
+* *Premium*: restricting a product category now hides the category itself, not only the products in it. Until now a restricted category still appeared in category widgets, menus and any other listing, and its archive URL still opened — to a page with no products, but a real page carrying the category name. Restricted categories are now excluded from category listings and their archive is denied the same way a restricted product URL is, honouring the same 404-or-redirect setting.
+
+* This makes a "members-only catalogue" work as expected: give the category a role, and everyone else stops seeing both the products and the category.
 
 = 20260826 =
 
