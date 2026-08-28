@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Membership & User Roles for WooCommerce (Automatic Role Changer)
  * Description: Sync user roles with memberships and subscriptions. Grant access on purchase, revoke on expiry, and restrict your store by role.
- * Version:     20260827
+ * Version:     20260828
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -28,7 +28,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20260827
+ * @version   20260828
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -36,7 +36,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-const DFX_WOO_ROLE_CHANGER_VERSION = '20260827';
+const DFX_WOO_ROLE_CHANGER_VERSION = '20260828';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
