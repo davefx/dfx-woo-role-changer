@@ -5,7 +5,7 @@ Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 6.2
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 20260828
+Stable tag: 20261007
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -152,6 +152,22 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20261007 =
+
+**Security fix for "Replace Roles" mode. Please update.**
+
+*What was wrong:* since 20260826, Replace Roles mode keeps the roles other plugins give a user (see that version's notes). To do so it remembered those roles, and it kept remembering them even after the other plugin had taken them away. So a role that had been legitimately revoked could come back on the user's next purchase of a role-mapped product... including Administrator, if some other mechanism had once made that user an administrator and later removed it.
+
+*Who is affected:* only sites using Replace Roles mode on versions 20260826, 20260827 or 20260828, and only for a user who had a role revoked by something other than this plugin while this plugin was managing their roles. The default "Add/Remove Roles" mode was never affected.
+
+*What changed:* a role this plugin did not grant is now kept only while the user actually holds it. The moment it leaves the user (whoever removes it) it is forgotten, and it is never put back. Administrator is never remembered at all, and the `dfx_woo_role_changer_foreign_roles` filter can no longer add a role the user does not have.
+
+*What you should do:* if you used Replace Roles mode on one of the affected versions, take a quick look at Users → Administrators after updating and make sure everyone on that list should be there.
+
+Thanks to Azgnt for reporting this through the Wordfence bug bounty program.
+
+* Freemius SDK updated to 2.13.5, a security release that fixes several low-severity issues in the SDK itself.
 
 = 20260828 =
 

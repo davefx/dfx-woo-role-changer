@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Membership & User Roles for WooCommerce (Automatic Role Changer)
  * Description: Sync user roles with memberships and subscriptions. Grant access on purchase, revoke on expiry, and restrict your store by role.
- * Version:     20260828
+ * Version:     20261007
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -28,7 +28,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20260828
+ * @version   20261007
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -36,7 +36,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-const DFX_WOO_ROLE_CHANGER_VERSION = '20260828';
+const DFX_WOO_ROLE_CHANGER_VERSION = '20261007';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
@@ -86,6 +86,14 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
         public const PLUGIN_DIR_PATH = __DIR__;
 
         public $PLUGIN_DIR_URL;
+
+        /**
+         * True while replace mode rewrites a user's roles, so that
+         * forget_revoked_foreign_roles() ignores our own set_role().
+         *
+         * @var bool
+         */
+        private $rewriting_roles = false;
 
         /**
          * Returns the instance.
@@ -147,6 +155,18 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
          */
         private function registerHooks() {
             add_action( 'plugins_loaded', [$this, 'load_i18n'] );
+            add_action(
+                'remove_user_role',
+                [$this, 'forget_revoked_foreign_roles'],
+                10,
+                1
+            );
+            add_action(
+                'set_user_role',
+                [$this, 'forget_revoked_foreign_roles'],
+                10,
+                1
+            );
             $grant_moments = $this->get_current_grant_moment();
             if ( in_array( 'on_payment', $grant_moments, true ) ) {
                 add_action(
@@ -397,8 +417,19 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
          * A role counts as foreign when this plugin never granted it and it was
          * not part of the snapshot taken at the first grant (that snapshot is
          * what replace mode is meant to replace, and it is restored later). The
-         * set is sticky: a role seen as foreign once stays protected until the
-         * last managed role goes, so it survives being temporarily absent.
+         * cache exists for a role that is both foreign and managed: seen_now
+         * cannot tell it apart, so it is remembered from when it could.
+         *
+         * Only roles the user holds right now are ever carried over. Every
+         * rewrite re-adds the foreign roles, so if one is missing it was the
+         * other plugin (or a site admin) who removed it, and that decision
+         * stands: it is evicted from the cache rather than restored. Restoring
+         * it turned a revoked administrator back into an administrator on the
+         * next purchase. The filter cannot add a role the user lacks either —
+         * it can narrow the protection, never turn it into a grant.
+         *
+         * administrator is never cached at all. Replace mode does not touch an
+         * administrator in the first place, see maybe_add_role_to_user().
          *
          * Deliberately provider-agnostic — no plugin is named or detected. The
          * filter is there for the case where a site needs to correct the guess.
@@ -409,24 +440,60 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
          * @return string[] Roles to carry over.
          */
         private function remember_foreign_roles( $user, array $managed ) {
+            $current = (array) $user->roles;
             $old_roles = get_user_meta( $user->ID, 'dfxwcrc_old_roles', true );
             $old_roles = ( is_array( $old_roles ) ? $old_roles : array() );
             $known = get_user_meta( $user->ID, 'dfxwcrc_foreign_roles', true );
-            $known = ( is_array( $known ) ? $known : array() );
-            $seen_now = array_diff( (array) $user->roles, $managed, $old_roles );
+            $known = ( is_array( $known ) ? array_intersect( $known, $current ) : array() );
+            $seen_now = array_diff( $current, $managed, $old_roles );
             $foreign = array_values( array_unique( array_merge( $known, $seen_now ) ) );
-            $foreign = array_values( array_filter( apply_filters(
+            $foreign = array_values( array_filter( (array) apply_filters(
                 'dfx_woo_role_changer_foreign_roles',
                 $foreign,
                 $user,
                 $managed
-            ), function ( $role ) {
-                return is_string( $role ) && array_key_exists( $role, wp_roles()->get_names() );
+            ), function ( $role ) use($current) {
+                return is_string( $role ) && 'administrator' !== $role && in_array( $role, $current, true ) && array_key_exists( $role, wp_roles()->get_names() );
             } ) );
             if ( $foreign ) {
                 update_user_meta( $user->ID, 'dfxwcrc_foreign_roles', $foreign );
+            } else {
+                delete_user_meta( $user->ID, 'dfxwcrc_foreign_roles' );
             }
             return $foreign;
+        }
+
+        /**
+         * Drops a foreign role from the cache the moment it leaves the user.
+         *
+         * remember_foreign_roles() already ignores stale entries when it reads
+         * them; this keeps the stored meta itself from ever holding a role the
+         * user no longer has. Runs after any remove_role() or set_role(), by
+         * whoever calls it, except our own rewrite in replace mode, which
+         * removes the foreign roles only to put them straight back.
+         *
+         * @param int $user_id User whose roles changed.
+         *
+         * @return void
+         */
+        public function forget_revoked_foreign_roles( $user_id ) {
+            if ( $this->rewriting_roles ) {
+                return;
+            }
+            $known = get_user_meta( $user_id, 'dfxwcrc_foreign_roles', true );
+            if ( !is_array( $known ) || !$known ) {
+                return;
+            }
+            $user = new WP_User($user_id);
+            $still = array_values( array_intersect( $known, (array) $user->roles ) );
+            if ( $still === array_values( $known ) ) {
+                return;
+            }
+            if ( $still ) {
+                update_user_meta( $user_id, 'dfxwcrc_foreign_roles', $still );
+            } else {
+                delete_user_meta( $user_id, 'dfxwcrc_foreign_roles' );
+            }
         }
 
         public function maybe_add_role_to_user(
@@ -463,9 +530,14 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                     // another plugin put there are carried over, see
                     // remember_foreign_roles().
                     $foreign = $this->remember_foreign_roles( $user, $managed );
-                    $user->set_role( $new_role );
-                    foreach ( $foreign as $foreign_role ) {
-                        $user->add_role( $foreign_role );
+                    $this->rewriting_roles = true;
+                    try {
+                        $user->set_role( $new_role );
+                        foreach ( $foreign as $foreign_role ) {
+                            $user->add_role( $foreign_role );
+                        }
+                    } finally {
+                        $this->rewriting_roles = false;
                     }
                     $role_was_added = true;
                 }
@@ -519,25 +591,36 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                     // Capture anything a third party added before we rewrite the
                     // role set, or it would be lost here too.
                     $foreign = $this->remember_foreign_roles( $user, array_merge( $managed, array($role) ) );
-                    if ( empty( $managed ) ) {
-                        // No managed roles remain; restore the user's original roles.
-                        $old_roles = get_user_meta( $user->ID, 'dfxwcrc_old_roles', true );
-                        $user->set_role( '' );
-                        if ( is_array( $old_roles ) ) {
-                            foreach ( $old_roles as $old_role ) {
-                                $user->add_role( $old_role );
+                    // Never cached as foreign, so set_role() below would strip it.
+                    // Kept only because the user holds it at this very moment.
+                    $is_administrator = in_array( 'administrator', $user->roles, true );
+                    $this->rewriting_roles = true;
+                    try {
+                        if ( empty( $managed ) ) {
+                            // No managed roles remain; restore the user's original roles.
+                            $old_roles = get_user_meta( $user->ID, 'dfxwcrc_old_roles', true );
+                            $user->set_role( '' );
+                            if ( is_array( $old_roles ) ) {
+                                foreach ( $old_roles as $old_role ) {
+                                    $user->add_role( $old_role );
+                                }
                             }
+                            delete_user_meta( $user->ID, 'dfxwcrc_old_roles' );
+                            delete_user_meta( $user->ID, 'dfxwcrc_managed_roles' );
+                            delete_user_meta( $user->ID, 'dfxwcrc_foreign_roles' );
+                        } else {
+                            // Other managed roles still active; fall back to the most recent.
+                            update_user_meta( $user->ID, 'dfxwcrc_managed_roles', $managed );
+                            $user->set_role( end( $managed ) );
                         }
-                        delete_user_meta( $user->ID, 'dfxwcrc_old_roles' );
-                        delete_user_meta( $user->ID, 'dfxwcrc_managed_roles' );
-                        delete_user_meta( $user->ID, 'dfxwcrc_foreign_roles' );
-                    } else {
-                        // Other managed roles still active; fall back to the most recent.
-                        update_user_meta( $user->ID, 'dfxwcrc_managed_roles', $managed );
-                        $user->set_role( end( $managed ) );
-                    }
-                    foreach ( $foreign as $foreign_role ) {
-                        $user->add_role( $foreign_role );
+                        foreach ( $foreign as $foreign_role ) {
+                            $user->add_role( $foreign_role );
+                        }
+                        if ( $is_administrator ) {
+                            $user->add_role( 'administrator' );
+                        }
+                    } finally {
+                        $this->rewriting_roles = false;
                     }
                 }
             } else {
