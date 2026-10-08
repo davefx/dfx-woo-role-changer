@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Membership & User Roles for WooCommerce (Automatic Role Changer)
  * Description: Sync user roles with memberships and subscriptions. Grant access on purchase, revoke on expiry, and restrict your store by role.
- * Version:     20261007
+ * Version:     20261008
  * Author:      David Marín Carreño
  * Author URI:  https://davefx.com
  * Text Domain: dfx-woo-role-changer
@@ -28,7 +28,7 @@
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  *
  * @package   DFX-Woo-Role-Changer
- * @version   20261007
+ * @version   20261008
  * @author    David Marín Carreño <davefx@davefx.com>
  * @copyright Copyright (c) 2020-2025 David Marín Carreño
  * @link      https://davefx.com
@@ -36,7 +36,7 @@
  *
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-const DFX_WOO_ROLE_CHANGER_VERSION = '20261007';
+const DFX_WOO_ROLE_CHANGER_VERSION = '20261008';
 if ( function_exists( 'dfx_woo_role_changer_fs' ) ) {
     dfx_woo_role_changer_fs()->set_basename( false, __FILE__ );
 } else {
@@ -167,6 +167,24 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
                 10,
                 1
             );
+            add_filter(
+                'add_post_metadata',
+                [$this, 'guard_role_meta_add'],
+                10,
+                4
+            );
+            add_filter(
+                'update_post_metadata',
+                [$this, 'guard_role_meta_update'],
+                10,
+                4
+            );
+            add_filter(
+                'update_post_metadata_by_mid',
+                [$this, 'guard_role_meta_update_by_mid'],
+                10,
+                4
+            );
             $grant_moments = $this->get_current_grant_moment();
             if ( in_array( 'on_payment', $grant_moments, true ) ) {
                 add_action(
@@ -283,8 +301,151 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             load_plugin_textdomain( 'dfx-woo-role-changer', false, $plugin_rel_path );
         }
 
+        /**
+         * Roles the current user may configure a product or membership to grant.
+         *
+         * Configuring a role here hands it to whoever buys, the buyer included,
+         * so it is the same act as changing a user's role and gets the same
+         * check: the right to manage users at all (promote_users, or edit_users,
+         * which is what WooCommerce gives Shop Managers), limited to
+         * get_editable_roles(). WooCommerce narrows editable_roles for a Shop
+         * Manager to customer (plus woocommerce_shop_manager_editable_roles)
+         * and drops administrator for anyone who is not one, which is what
+         * keeps a Shop Manager from selling themselves administrator. A role
+         * that can only edit products gets nothing.
+         *
+         * Roles already stored on the object stay valid, so a user who cannot
+         * grant them can still save the product without wiping an
+         * administrator's configuration, or remove them.
+         *
+         * @param string $stored Comma-separated roles currently stored, if any.
+         *
+         * @return array Role slug => name, in wp_roles() order.
+         */
+        public static function grantable_roles( $stored = '' ) {
+            $all = wp_roles()->get_names();
+            $allowed = array();
+            if ( current_user_can( 'promote_users' ) || current_user_can( 'edit_users' ) ) {
+                if ( !function_exists( 'get_editable_roles' ) ) {
+                    require_once ABSPATH . 'wp-admin/includes/user.php';
+                }
+                $allowed = get_editable_roles();
+            }
+            $allowed += array_flip( self::split_roles( $stored ) );
+            return array_intersect_key( $all, $allowed );
+        }
+
+        /**
+         * @param mixed $value Comma-separated role list as stored in meta.
+         *
+         * @return string[]
+         */
+        private static function split_roles( $value ) {
+            if ( !is_string( $value ) ) {
+                return array();
+            }
+            return array_values( array_filter( array_map( 'trim', explode( ',', $value ) ), function ( $role ) {
+                return $role !== '' && $role !== 'none';
+            } ) );
+        }
+
+        private static function is_role_meta_key( $meta_key ) {
+            return $meta_key === '_dfxwcrc_role_assignment' || strpos( (string) $meta_key, '_dfxwcrc_mepr_role_' ) === 0;
+        }
+
+        /**
+         * The enforcement point for grantable_roles(), whatever the write path.
+         *
+         * The product form is not the only way in: the WooCommerce REST API
+         * takes arbitrary meta_data, and so do the CSV importer and product
+         * duplication. Checking here covers all of them.
+         *
+         * Writes with no logged-in user (WP-CLI, cron, code configuring a site)
+         * are trusted, as WordPress itself does for its meta functions.
+         *
+         * @return bool|null Null to allow, false to refuse the write.
+         */
+        private function guard_role_meta(
+            $object_id,
+            $meta_key,
+            $meta_value,
+            $stored
+        ) {
+            if ( !self::is_role_meta_key( $meta_key ) || !is_user_logged_in() ) {
+                return null;
+            }
+            $grantable = self::grantable_roles( $stored );
+            foreach ( self::split_roles( $meta_value ) as $role ) {
+                if ( !array_key_exists( $role, $grantable ) ) {
+                    return false;
+                }
+            }
+            return null;
+        }
+
+        public function guard_role_meta_add(
+            $check,
+            $object_id,
+            $meta_key,
+            $meta_value
+        ) {
+            if ( $check !== null || !self::is_role_meta_key( $meta_key ) ) {
+                return $check;
+            }
+            return $this->guard_role_meta(
+                $object_id,
+                $meta_key,
+                $meta_value,
+                get_post_meta( $object_id, $meta_key, true )
+            );
+        }
+
+        public function guard_role_meta_update(
+            $check,
+            $object_id,
+            $meta_key,
+            $meta_value
+        ) {
+            if ( $check !== null || !self::is_role_meta_key( $meta_key ) ) {
+                return $check;
+            }
+            return $this->guard_role_meta(
+                $object_id,
+                $meta_key,
+                $meta_value,
+                get_post_meta( $object_id, $meta_key, true )
+            );
+        }
+
+        public function guard_role_meta_update_by_mid(
+            $check,
+            $meta_id,
+            $meta_value,
+            $meta_key
+        ) {
+            if ( $check !== null ) {
+                return $check;
+            }
+            $meta = get_metadata_by_mid( 'post', $meta_id );
+            if ( !$meta ) {
+                return null;
+            }
+            // The key may be changing too; guard whichever of the two is ours.
+            $key = ( $meta_key ? $meta_key : $meta->meta_key );
+            if ( !self::is_role_meta_key( $key ) ) {
+                return null;
+            }
+            $stored = ( self::is_role_meta_key( $meta->meta_key ) ? $meta->meta_value : '' );
+            return $this->guard_role_meta(
+                $meta->post_id,
+                $key,
+                $meta_value,
+                $stored
+            );
+        }
+
         public function add_role_assignment_option() {
-            $options = wp_roles()->get_names();
+            $options = self::grantable_roles( get_post_meta( get_the_ID(), '_dfxwcrc_role_assignment', true ) );
             $options = array_merge( [
                 'none' => __( 'None', 'dfx-woo-role-changer' ),
             ], $options );
@@ -318,7 +479,7 @@ if ( !class_exists( 'DfxWooRoleChanger' ) ) {
             if ( !isset( $_POST['dfxwcrc_role_assignment'] ) ) {
                 return;
             }
-            $available_roles = wp_roles()->get_names();
+            $available_roles = self::grantable_roles( get_post_meta( $id, '_dfxwcrc_role_assignment', true ) );
             $assignment = apply_filters( 'dfx_wrc_product_new_role', sanitize_text_field( $_POST['dfxwcrc_role_assignment'] ) );
             if ( $assignment !== 'none' ) {
                 if ( apply_filters(

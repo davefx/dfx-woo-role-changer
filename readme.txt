@@ -5,7 +5,7 @@ Tags: membership, user roles, subscriptions, access control, restrict content
 Requires at least: 6.2
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 20261007
+Stable tag: 20261008
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Plugin URI: https://davefx.com/en/dfx-automatic-role-changer-for-woocommerce/
@@ -152,6 +152,15 @@ Author: David Marín Carreño
 Website: [https://davefx.com/en/wordpress-plugins](https://davefx.com/en/wordpress-plugins)
 
 == Changelog ==
+
+= 20261008 =
+
+**Security fix. Please update.**
+
+* Only users who can change other users' roles can now choose which role a product, variation or MemberPress membership grants, and only among the roles they could assign themselves. Until now anyone who could edit products (a Shop Manager, for instance) could set a product to grant Administrator and then buy it. A Shop Manager can now pick Customer (plus any role you allow through WooCommerce's `woocommerce_shop_manager_editable_roles` filter); administrators can pick any role. The check also covers the WooCommerce REST API, the CSV importer and product duplication, not just the product screen.
+* Roles already configured are kept: a Shop Manager saving a product will not wipe the role an administrator set, and can still remove it.
+* If Shop Managers or other non-administrators edit products on your site, take a minute to check that no product grants a role it should not.
+* Freemius SDK: the add-on title on the add-ons screen is now escaped.
 
 = 20261007 =
 

@@ -259,15 +259,15 @@ if ( !class_exists( 'DfxWooRoleChangerMemberPress' ) ) {
                 }
                 return;
             }
-            $options = array_merge( [
-                'none' => __( 'None', 'dfx-woo-role-changer' ),
-            ], wp_roles()->get_names() );
             $labels = self::get_state_labels();
             // Written as a positive premium block so the free build is left with
             // the single-select default when Freemius strips it.
             $multiple = false;
             foreach ( self::get_states() as $state ) {
                 $selected = $this->get_roles_for_state( $post->ID, $state );
+                $options = array_merge( [
+                    'none' => __( 'None', 'dfx-woo-role-changer' ),
+                ], DfxWooRoleChanger::grantable_roles( implode( ',', $selected ) ) );
                 printf( '<p><label for="%1$s"><strong>%2$s</strong></label><br>', esc_attr( 'dfxwcrc_mepr_role_' . $state ), esc_html( $labels[$state] ?? $state ) );
                 printf(
                     '<select id="%1$s" name="%1$s%2$s" style="width:100%%"%3$s>',
@@ -311,8 +311,8 @@ if ( !class_exists( 'DfxWooRoleChangerMemberPress' ) ) {
             if ( !$this->membership_is_mappable( $post_id ) ) {
                 return;
             }
-            $available = wp_roles()->get_names();
             foreach ( self::get_states() as $state ) {
+                $available = DfxWooRoleChanger::grantable_roles( get_post_meta( $post_id, self::META_PREFIX . $state, true ) );
                 $field = 'dfxwcrc_mepr_role_' . $state;
                 if ( !isset( $_POST[$field] ) ) {
                     continue;

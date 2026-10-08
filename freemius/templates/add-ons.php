@@ -233,7 +233,7 @@
                                         }
                                         ?></li>
 									<!-- <li class="fs-tag"></li> -->
-									<li class="fs-title"><?php echo $addon->title ?></li>
+									<li class="fs-title"><?php echo esc_html( $addon->title ) ?></li>
 									<li class="fs-offer">
 									<span
 										class="fs-price"><?php
